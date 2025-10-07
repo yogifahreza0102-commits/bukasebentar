@@ -11,7 +11,13 @@ body, html { width:100%; height:100%; overflow:hidden; background:url('assets/ba
 /* Pages */
 .page { position:absolute; width:100%; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; color:white; opacity:0; transition:opacity 1s ease; padding:10px; }
 .page.active { opacity:1; z-index:2; }
-.content { text-align:center; animation: fadeInContent 1s ease; }
+.content { 
+    text-align:center; 
+    animation: fadeInContent 1s ease; 
+    background: rgba(0,0,0,0.4);  /* semi transparan */
+    padding: 20px 25px;
+    border-radius: 15px;
+}
 h1 { font-size:2.5rem; margin-bottom:15px; }
 p { font-size:1.2rem; line-height:1.6; margin:10px 0; }
 button { margin-top:20px; padding:10px 25px; border:none; background: rgba(255,255,255,0.3); color:white; border-radius:25px; cursor:pointer; backdrop-filter:blur(5px); transition: all 0.3s ease; font-size:1rem; }
@@ -200,6 +206,9 @@ yesBtn.addEventListener('click', ()=>{
       confettiSound.currentTime = 0;
       confettiSound.play().catch(()=>{});
     },4000);
+
+    // hilangkan kalimat pertama setelah 4 detik
+    setTimeout(()=>{ response.innerHTML = ""; }, 4000);
   }
 });
 
