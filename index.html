@@ -197,8 +197,10 @@ yesBtn.addEventListener('click', ()=>{
     yesBtn.style.display="none";
     noBtn.style.display="none";
 
+    // tampilkan kalimat pertama
     response.innerHTML = "Eh kok kabur kaburan gitu sih🤣";
 
+    // ganti setelah 4 detik
     setTimeout(()=>{
       response.innerHTML = "Hhehe bercanda sayang, udah aku siapin kok kadonya 💝 tunggu aja yaa";
       replyBtn.style.display="inline-block";
@@ -206,9 +208,6 @@ yesBtn.addEventListener('click', ()=>{
       confettiSound.currentTime = 0;
       confettiSound.play().catch(()=>{});
     },4000);
-
-    // hilangkan kalimat pertama setelah 4 detik
-    setTimeout(()=>{ response.innerHTML = ""; }, 4000);
   }
 });
 
@@ -231,3 +230,4 @@ noBtn.addEventListener('click', ()=>{
 </script>
 </body>
 </html>
+
