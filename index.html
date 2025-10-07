@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BukaSebentar</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif; }
+body, html { width:100%; height:100%; overflow:hidden; background:url('assets/background-romance.jpg') center/cover no-repeat; }
+
+/* Pages */
+.page { position:absolute; width:100%; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; color:white; opacity:0; transition:opacity 1s ease; padding:10px; }
+.page.active { opacity:1; z-index:2; }
+.content { text-align:center; animation: fadeInContent 1s ease; }
+h1 { font-size:2.5rem; margin-bottom:15px; }
+p { font-size:1.2rem; line-height:1.6; margin:10px 0; }
+button { margin-top:20px; padding:10px 25px; border:none; background: rgba(255,255,255,0.3); color:white; border-radius:25px; cursor:pointer; backdrop-filter:blur(5px); transition: all 0.3s ease; font-size:1rem; }
+button:hover { background: rgba(255,255,255,0.5); transform: scale(1.05); }
+.choice-btns { display:flex; justify-content:center; align-items:center; gap:15px; flex-wrap:wrap; margin-top:20px; }
+.moving-btn { position:relative; transition: transform 0.3s ease; }
+#replyBtn { margin-top:30px; background:#25D366; color:white; padding:12px 25px; border-radius:30px; font-size:1.1rem; text-decoration:none; transition: all 0.3s ease; display:none; }
+#replyBtn:hover { background:#1ebe5d; transform: scale(1.05); }
+
+/* Animasi */
+@keyframes fadeInContent { from{opacity:0; transform:translateY(20px);} to{opacity:1; transform:translateY(0);} }
+
+/* Hati melayang */
+.heart {
+  position:absolute; width:12px; height:12px; background:red;
+  clip-path: polygon(50% 0%, 61% 8%, 68% 20%, 68% 35%, 50% 55%, 32% 35%, 32% 20%, 39% 8%);
+  opacity:0.8;
+}
+@keyframes floatHeartLoop {
+  0% { transform: translateY(0) rotate(0deg); opacity:0.8; }
+  50% { opacity:1; }
+  100% { transform: translateY(-110vh) rotate(360deg); opacity:0; }
+}
+
+/* Confetti */
+.confetti {
+  position:absolute; width:8px; height:8px; opacity:0.8;
+  animation: fall linear forwards;
+  border-radius: 50%;
+}
+@keyframes fall { 0% { transform: translateY(0) rotate(0deg); } 100% { transform: translateY(500px) rotate(360deg); opacity:0; } }
+
+/* Mobile adjustments */
+@media(max-width: 400px){
+  h1 { font-size:2rem; }
+  p { font-size:1rem; }
+  button { padding:8px 20px; font-size:0.9rem; }
+  .choice-btns { gap:10px; }
+}
+</style>
+</head>
+<body>
+
+<audio id="bg-music" loop>
+  <source src="assets/romantic.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Pages -->
+<div class="page active" id="page1">
+  <div class="content">
+    <h1>8 Oktober 📅</h1>
+    <p>Hari yang spesial untuk orang yang spesial.<br>I just want to say… today is all about you, sayang.</p>
+    <button onclick="nextPage(2)">Next ➜</button>
+  </div>
+</div>
+
+<div class="page" id="page2">
+  <div class="content">
+    <h1>Happy Birthday Sayang 🎂</h1>
+    <p>Semoga hari kamu penuh tawa, cinta, dan hal-hal manis (termasuk aku 😜)<br>Sehat selalu ya sayang, you deserve all the happiness today and always 💐</p> 
+    <button onclick="nextPage(3)">Next ➜</button>
+  </div>
+</div>
+
+<div class="page" id="page3">
+  <div class="content">
+    <h1>Thank you for being in my life 💞</h1>
+    <p>Makasih ya sayang udah nemenin hari-hariku dan jadi tempat aku cerita.<br>Walau kadang ngeselin 😅<br>But still, I wouldn’t trade you for anything.</p> 
+    <button onclick="nextPage(4)">Next ➜</button>
+  </div>
+</div>
+
+<div class="page" id="page4">
+  <div class="content">
+    <h1>Harapan: Untuk Kamu dan Kita👩🏻‍🤝‍👨🏻</h1>
+    <p>Hari ini aku cuma mau kamu bahagia.<br>May this year bring more love, laughter, and dreams come true.<br>Dan aku harap aku bisa selalu jadi bagian dari ceritamu 😌</p>
+    <button onclick="nextPage(5)">Next ➜</button>
+  </div>
+</div>
+
+<div class="page" id="page5">
+  <div class="content">
+    <h1>For You, Always 💖</h1>
+    <p>Happy birthday, my girl 🎂💐<br>Semoga hari ini kamu ngerasa dicintai sebesar yang kamu pantas dapetin.<br>I love you — not just today, but every day, in every way ❤️</p> 
+    <button onclick="nextPage(6)">Next ➜</button>
+  </div>
+</div>
+
+<div class="page" id="page6">
+  <div class="content">
+    <h1>Hmm... 🎁</h1>
+    <p id="gift-question">Kamu mau aku kasih kado nggak, sayang?</p>
+    <div class="choice-btns">
+      <button class="moving-btn" id="yesBtn">Mauuu 😍</button>
+      <button id="noBtn">Enggak usahh</button>
+    </div>
+    <p id="gift-response" style="margin-top:15px; font-size:1.2rem;"></p>
+    <a id="replyBtn" href="https://wa.me/6282232923136?text=" target="_blank">💬 Balas yaa sayang</a>
+  </div>
+</div>
+
+<script>
+let current = 1;
+const music = document.getElementById('bg-music');
+const yesBtn = document.getElementById('yesBtn');
+const noBtn = document.getElementById('noBtn');
+const question = document.getElementById('gift-question');
+const response = document.getElementById('gift-response');
+const replyBtn = document.getElementById('replyBtn');
+let escapeCount = 0;
+
+// Audio confetti
+const confettiSound = new Audio('assets/confetti.mp3');
+
+// Hati melayang
+function createHearts(count=15){
+  for(let i=0;i<count;i++){
+    const heart=document.createElement('div');
+    heart.className='heart';
+    const size=8+Math.random()*10;
+    heart.style.width=size+'px';
+    heart.style.height=size+'px';
+    heart.style.left=Math.random()*100+'vw';
+    heart.style.bottom=5 + Math.random()*90 + 'vh';
+    const rotate=Math.random()*90-45;
+    heart.style.transform=`rotate(${rotate}deg)`;
+    heart.style.animation=`floatHeartLoop ${4+Math.random()*3}s linear infinite`;
+    document.body.appendChild(heart);
+  }
+}
+createHearts();
+
+function nextPage(next){
+  document.getElementById(`page${current}`).classList.remove('active');
+  document.getElementById(`page${next}`).classList.add('active');
+  current = next;
+  if(music.paused) music.play().catch(()=>{});
+}
+
+// Confetti meriah
+function spawnConfetti(){
+  for(let i=0;i<50;i++){
+    const c=document.createElement('div');
+    c.className='confetti';
+    c.style.left=Math.random()*100+'vw';
+    c.style.background=`hsl(${Math.random()*360},100%,50%)`;
+    const size = 5+Math.random()*8;
+    c.style.width=size+'px';
+    c.style.height=size+'px';
+    c.style.animationDuration=(2+Math.random()*2)+'s';
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),4000);
+  }
+}
+
+// Tombol Mauuu
+yesBtn.addEventListener('click', ()=>{
+  if(escapeCount < 3){
+    const tmp=document.createElement('p');
+    tmp.textContent="Eitss.. ngga kena! 😆";
+    tmp.style.position="absolute";
+    tmp.style.top= yesBtn.getBoundingClientRect().top-30+"px";
+    tmp.style.left= yesBtn.getBoundingClientRect().left+"px";
+    tmp.style.color="yellow"; tmp.style.fontWeight="bold";
+    document.body.appendChild(tmp);
+    setTimeout(()=>tmp.remove(),1000);
+
+    const maxX = window.innerWidth - yesBtn.offsetWidth;
+    const maxY = window.innerHeight - yesBtn.offsetHeight;
+    const randomX = Math.random()*maxX - yesBtn.offsetLeft;
+    const randomY = Math.random()*maxY - yesBtn.offsetTop;
+    yesBtn.style.transform=`translate(${randomX}px,${randomY}px)`;
+    escapeCount++;
+  } else {
+    yesBtn.style.transform="translate(0,0)";
+    question.style.display="none";
+    yesBtn.style.display="none";
+    noBtn.style.display="none";
+
+    response.innerHTML = "Eh kok kabur kaburan gitu sih🤣";
+
+    setTimeout(()=>{
+      response.innerHTML = "Hehe bercanda sayang, udah aku siapin kok kadonya 💝 tunggu aja yaa";
+      replyBtn.style.display="inline-block";
+      spawnConfetti();
+      confettiSound.currentTime = 0;
+      confettiSound.play().catch(()=>{});
+    },4000);
+  }
+});
+
+// Tombol Enggak
+noBtn.addEventListener('click', ()=>{
+  question.style.display="none";
+  yesBtn.style.display="none";
+  noBtn.style.display="none";
+
+  response.innerHTML = "Yeayy alhamdulillah, dompet aku aman 😆";
+
+  setTimeout(()=>{
+    response.innerHTML = "Hehe bercanda sayang, udah aku siapin kok kadonya 💝 tunggu aja yaa";
+    replyBtn.style.display="inline-block";
+    spawnConfetti();
+    confettiSound.currentTime = 0;
+    confettiSound.play().catch(()=>{});
+  },4000);
+});
+</script>
+</body>
+</html>
