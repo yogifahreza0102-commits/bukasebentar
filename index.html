@@ -12,29 +12,27 @@ body, html { width:100%; height:100%; overflow:hidden; background:url('assets/ba
 .page { position:absolute; width:100%; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; color:white; opacity:0; transition:opacity 1s ease; padding:10px; }
 .page.active { opacity:1; z-index:2; }
 .content { text-align:center; animation: fadeInContent 1s ease; }
-
-/* Efek outline teks */
-h1, p {
-  color:white;
-  text-shadow:
-     -2px -2px 0 #000,
-      2px -2px 0 #000,
-     -2px  2px 0 #000,
-      2px  2px 0 #000;
+h1 { font-size:2.5rem; margin-bottom:15px; 
+    color:#fff;
+    -webkit-text-stroke: 1.5px #000; 
+    text-shadow: 2px 2px 2px #000, -2px -2px 2px #000, 2px -2px 2px #000, -2px 2px 2px #000;
 }
-
-/* Judul & paragraf */
-h1 { font-size:2.5rem; margin-bottom:15px; }
-p { font-size:1.2rem; line-height:1.6; margin:10px 0; }
-
-/* Tombol */
-button { margin-top:20px; padding:10px 25px; border:none; background: rgba(255,255,255,0.3); color:white; border-radius:25px; cursor:pointer; backdrop-filter:blur(5px); transition: all 0.3s ease; font-size:1rem; }
+p { font-size:1.2rem; line-height:1.6; margin:10px 0;
+    color:#fff;
+    -webkit-text-stroke: 0.8px #000; 
+    text-shadow: 1px 1px 2px #000, -1px -1px 2px #000, 1px -1px 2px #000, -1px 1px 2px #000;
+}
+button { margin-top:20px; padding:10px 25px; border:none; background: rgba(255,255,255,0.3); color:white; border-radius:25px; cursor:pointer; backdrop-filter:blur(5px); transition: all 0.3s ease; font-size:1rem;
+    -webkit-text-stroke: 0.8px #000;
+    text-shadow: 1px 1px 2px #000, -1px -1px 2px #000, 1px -1px 2px #000, -1px 1px 2px #000;
+}
 button:hover { background: rgba(255,255,255,0.5); transform: scale(1.05); }
-
-/* Tombol pilihan */
 .choice-btns { display:flex; justify-content:center; align-items:center; gap:15px; flex-wrap:wrap; margin-top:20px; }
 .moving-btn { position:relative; transition: transform 0.3s ease; }
-#replyBtn { margin-top:30px; background:#25D366; color:white; padding:12px 25px; border-radius:30px; font-size:1.1rem; text-decoration:none; transition: all 0.3s ease; display:none; }
+#replyBtn { margin-top:30px; background:#25D366; color:white; padding:12px 25px; border-radius:30px; font-size:1.1rem; text-decoration:none; transition: all 0.3s ease; display:none;
+    -webkit-text-stroke: 0.8px #000;
+    text-shadow: 1px 1px 2px #000, -1px -1px 2px #000, 1px -1px 2px #000, -1px 1px 2px #000;
+}
 #replyBtn:hover { background:#1ebe5d; transform: scale(1.05); }
 
 /* Animasi */
@@ -210,6 +208,7 @@ yesBtn.addEventListener('click', ()=>{
     response.innerHTML = "Eh kok kabur kaburan gitu sih🤣";
 
     setTimeout(()=>{
+      response.innerHTML = "";
       response.innerHTML = "Hhehe bercanda sayang, udah aku siapin kok kadonya 💝 tunggu aja yaa";
       replyBtn.style.display="inline-block";
       spawnConfetti();
@@ -228,6 +227,7 @@ noBtn.addEventListener('click', ()=>{
   response.innerHTML = "Yeayy alhamdulillah, dompet aku amann 😆";
 
   setTimeout(()=>{
+    response.innerHTML = "";
     response.innerHTML = "Hhehe bercanda sayang, udah aku siapin kok kadonya 💝 tunggu aja yaa";
     replyBtn.style.display="inline-block";
     spawnConfetti();
